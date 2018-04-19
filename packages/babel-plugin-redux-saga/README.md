@@ -1,6 +1,7 @@
-## NOTE: plugin is still in development mode, so use it on your own risk
+## NOTE: plugin is still in beta, so use it on your own risk
 
 Babel plugin for code instrumenting by extending `redux-saga` code fragments with additional meta-data. Meta-data contains information about code fragment location and other details, that could be consumed by developer tools or libraries.
+Adding the plugin improve logging for errors thrown in your sagas.
 
 ## Example
 
@@ -8,7 +9,7 @@ Source:
 
 ```js
 function* saga1(){
-    yield foo(1, 2, 3);
+    yield call(foo, 1, 2, 3);
 }
 
 function* saga2(){
@@ -19,44 +20,43 @@ function* saga2(){
 Result:
 
 ```js
-var _SAGA_LOCATION = require("redux-saga").SAGA_LOCATION
-
 function* saga1() {
-    yield function reduxSagaSource() {
-        var res = foo(1, 2, 3);
-        res[_SAGA_LOCATION] = {
-            fileName: "{{filename}}",
-            lineNumber: 2,
-            code: "foo(1, 2, 3)"
-        };
-        return res;
-    }();
+    yield Object.defineProperty(call(foo, 1, 2, 3), Symbol.for("@@redux-saga/LOCATION"), {
+        value: {
+            fileName: "{{pathToFile}}",
+            lineNumber: 1,
+            code: "call(foo, 1, 2, 3)"
+        }
+    })
 }
 
-saga1[_SAGA_LOCATION] = {
-    fileName: "{{filename}}",
+Object.defineProperty(saga1, Symbol.for("@@redux-saga/LOCATION"), {
+  value: {
+    fileName: "{{pathToFile}}",
     lineNumber: 1
-};
+  }
+})
 function* saga2() {
     yield 2;
 }
-saga2[_SAGA_LOCATION] = {
-    fileName: "{{filename}}",
+Object.defineProperty(saga2, Symbol.for("@@redux-saga/LOCATION"), {
+  value: {
+    fileName: "{{pathToFile}}",
     lineNumber: 5
-};
+  }
+})
 ```
 
 ## Usage
 
 1. with babel
 ```js
-babel.transform(content, {
-    sourceMaps: true,
+// .babelrc
     plugins: [
+        ...
         ['babel-plugin-redux-saga', { /* options */ }]
     ],
     ...
-});
 ```
 
 2. with [webpack](https://github.com/webpack/webpack/) and [babel-loader](https://github.com/babel/babel-loader):
@@ -73,6 +73,7 @@ babel.transform(content, {
 }
 ```
 
+Usage example could be found [in examples folder](../../examples/error-demo)
 ### Options
 
 All options are optional.
