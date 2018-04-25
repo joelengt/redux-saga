@@ -7,8 +7,8 @@
     "test": "cross-env NODE_ENV=test babel-node test/sagas.js | tap-spec"
   },
   "dependencies": {
-    "redux-saga": "^1.0.0-beta.0",
-    "saga-monitor-example": "^1.0.0-beta.0"
+    "redux-saga": "file:../../packages/core",
+    "saga-monitor-example": "file:../sagaMonitor"
   },
   "devDependencies": {
     "@babel/core": "7.0.0-beta.39",

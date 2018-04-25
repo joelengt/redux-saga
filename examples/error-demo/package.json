@@ -6,7 +6,7 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "redux-saga": "^1.0.0-beta.0"
+    "redux-saga": "file:../../packages/core"
   },
   "devDependencies": {
     "@babel/core": "7.0.0-beta.39",
@@ -16,7 +16,7 @@
     "@babel/preset-react": "7.0.0-beta.39",
     "@babel/preset-stage-2": "7.0.0-beta.39",
     "babel-loader": "8.0.0-beta.0",
-    "babel-plugin-redux-saga": "^1.0.0-beta.0",
+    "babel-plugin-redux-saga": "file:../../packages/babel-plugin-redux-saga",
     "express": "^4.13.3",
     "lint-staged": "^3.4.2",
     "react": "^15.0.0",

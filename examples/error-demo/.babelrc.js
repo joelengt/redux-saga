@@ -18,5 +18,6 @@ module.exports = {
   ],
   plugins: [
     cjs && '@babel/transform-modules-commonjs',
+    'babel-plugin-redux-saga'
   ].filter(Boolean),
 }
